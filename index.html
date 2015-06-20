@@ -16,56 +16,44 @@
     </style>
 
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script>
-    'use strict';
-      // var socket = io('http://localhost:3000');
-      // socket.on('news', function (data) {
-      //   console.log(data);
-      //   socket.emit('my other event', { my: 'data' });
-      // });
-    </script>
-
     <script type="text/jsx">
-	var socket = io();
-    var RemoteController = React.createClass({
-      render: function () {
-        return(
-        <div className="remoteController panel panel-default">
-          <div className="panel-heading">
-            <h3 className="panel-title">Remote Control</h3>
-          </div>
-          <div className="panel-body">
-            <Buttons value="Left"/>
-            <Buttons value="Right"/>
-            <Buttons value="Forward"/>
-            <Buttons value="Backward"/>
-          </div>
-        </div>
-        );
-      }
-    });
+		var socket = io();
+    	var RemoteController = React.createClass({
+	      	render: function () {
+	        	return(
+	        		<div className="remoteController panel panel-default">
+		          		<div className="panel-heading">
+		            		<h3 className="panel-title">Remote Control</h3>
+		          		</div>
+		          		<div className="panel-body">
+				            <Buttons value="Left"/>
+				            <Buttons value="Right"/>
+				            <Buttons value="Forward"/>
+				            <Buttons value="Backward"/>
+			 	        </div>
+	        		</div>
+	        	);
+	      	}
+    	});
 
-    var Buttons = React.createClass({
-      handleClick: function () {
+	    var Buttons = React.createClass({
+	      handleClick: function () {
+		      	socket.emit('click', this.props.value);
+		      	socket.on('click', function(msg){
+		        console.log('msg',msg);
+	      	});
+	      },
+	      render: function () {
+	        return(
+	        	<input type="button" className="btn btn-default btn-lg btn-block" onClick={this.handleClick} value={this.props.value} />
+	        );
+	      }
+	    });
 
-      var socket = io();
-      socket.emit('click', this.props.value);
-      socket.on('click', function(msg){
-        console.log('msg',msg);
-      });
-
-      },
-      render: function () {
-        return(
-            <input type="button" className="btn btn-default btn-lg btn-block" onClick={this.handleClick} value={this.props.value} />
-        );
-      }
-    });
-
-      React.render(
-        <RemoteController/>,
-        document.getElementById('content')
-      );        
+	    React.render(
+	    	<RemoteController/>,
+	        document.getElementById('content')
+	    );        
     </script>
   </head>
   <body>
