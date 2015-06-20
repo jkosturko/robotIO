@@ -4,8 +4,8 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
-  var five = require("johnny-five");
-  var board = new five.Board();
+var five = require("johnny-five");
+var board = new five.Board();
 
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
@@ -20,27 +20,14 @@ app.get('/', function (req, res) {
 
 io.on('connection', function(socket){
 
-
-
   board.on("ready", function() {
-
-    console.log('board ready');
     io.emit('board ready');
   });
 
+  socket.on('click', function(msg){
+    console.log('msg', msg);
 
-  // socket.on('click', function(msg){
-  //   io.emit('click', msg);
-  //   console.log (msg);
-  // });
-
-
-
-    socket.on('click', function(msg){
-      console.log('msg', msg);
-
-
-          // Johnny-Five provides pre-packages shield configurations!
+    // Johnny-Five provides pre-packages shield configurations!
     // http://johnny-five.io/api/motor/#pre-packaged-shield-configs
     var motors = new five.Motors([
       five.Motor.SHIELD_CONFIGS.POLOLU_DRV8835_SHIELD.M1,
@@ -67,48 +54,11 @@ io.on('connection', function(socket){
        motors[1].speed(50);
     }
 
-       // demonstrate stopping after 5 seconds
-      board.wait(500, function() {
-        motors.stop();
-      });   
+    // demonstrate stopping after 5 seconds
+    board.wait(500, function() {
+      motors.stop();
+    });   
 
-
-
-  // io.emit('click', msg);
-    console.log ('secondthing to do');
-    });
-
+  });
 
 });
-
-
-
-
-
-    // // Johnny-Five provides pre-packages shield configurations!
-    // // http://johnny-five.io/api/motor/#pre-packaged-shield-configs
-    // var motors = new five.Motors([
-    //   five.Motor.SHIELD_CONFIGS.POLOLU_DRV8835_SHIELD.M1,
-    //   five.Motor.SHIELD_CONFIGS.POLOLU_DRV8835_SHIELD.M2,
-    // ]);
-
-    // this.repl.inject({
-    //   motors: motors
-    // });
-
-    // motors.speed(80);
-
-    // // board.wait(500, function() {
-    // //   motors.reverse(90);
-    // // });
-
-    // // board.wait(500, function() {
-    // //   motors.forward(90);
-    // // });
-
-    //    // demonstrate stopping after 5 seconds
-    //   board.wait(500, function() {
-    //     motors.stop();
-    //   });   
-
-
