@@ -1,0 +1,11 @@
+{
+  "name": "demo-app",
+  "description": "A robot that is controlled by the Android phone",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "^4.12.4",
+    "http-server": "^0.8.0",
+    "johnny-five": "^0.8.81",
+    "socket.io": "^1.3.5"
+  }
+}
