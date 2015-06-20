@@ -4,6 +4,8 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
+  var five = require("johnny-five");
+  var board = new five.Board();
 
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
@@ -18,8 +20,7 @@ app.get('/', function (req, res) {
 
 io.on('connection', function(socket){
 
-  var five = require("johnny-five");
-  var board = new five.Board();
+
 
   board.on("ready", function() {
 
@@ -49,15 +50,22 @@ io.on('connection', function(socket){
     board.repl.inject({
         motors: motors
       });
-    motors.speed(80);
+    
+    motors.speed(180);
 
-    // board.wait(500, function() {
-    //   motors.reverse(90);
-    // });
+    if (msg === "Backward") {
+       motors.reverse(180);
+    }
 
-    // board.wait(500, function() {
-    //   motors.forward(90);
-    // });
+    if (msg === "Right") {
+       motors[0].speed(20);
+       motors[0].speed(50);
+    }
+
+    if (msg === "Left") {
+       motors[1].speed(20);
+       motors[1].speed(50);
+    }
 
        // demonstrate stopping after 5 seconds
       board.wait(500, function() {
