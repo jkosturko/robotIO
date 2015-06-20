@@ -18,6 +18,11 @@
 
     <script type="text/jsx">
 		var socket = io();
+		 socket.on('board ready', function(msg){
+        	console.log('board ready');
+        	socket.emit('board ready'); //not sure I need this - maybe to capture click until board is ready
+  		});
+
     	var RemoteController = React.createClass({
 	      	render: function () {
 	        	return(
@@ -38,10 +43,10 @@
 
 	    var Buttons = React.createClass({
 	      handleClick: function () {
-		      	socket.emit('click', this.props.value);
-		      	socket.on('click', function(msg){
-		        console.log('msg',msg);
-	      	});
+	      	socket.emit('click', this.props.value);
+	      	socket.on('click', function(msg){
+	        	console.log('msg',msg);
+      		});
 	      },
 	      render: function () {
 	        return(

@@ -17,8 +17,90 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function(socket){
-  socket.on('click', function(msg){
-    io.emit('click', msg);
-    console.log (msg);
+
+  var five = require("johnny-five");
+  var board = new five.Board();
+
+  board.on("ready", function() {
+
+    console.log('board ready');
+    io.emit('board ready');
   });
+
+
+  // socket.on('click', function(msg){
+  //   io.emit('click', msg);
+  //   console.log (msg);
+  // });
+
+
+
+    socket.on('click', function(msg){
+      console.log('msg', msg);
+
+
+          // Johnny-Five provides pre-packages shield configurations!
+    // http://johnny-five.io/api/motor/#pre-packaged-shield-configs
+    var motors = new five.Motors([
+      five.Motor.SHIELD_CONFIGS.POLOLU_DRV8835_SHIELD.M1,
+      five.Motor.SHIELD_CONFIGS.POLOLU_DRV8835_SHIELD.M2,
+    ]);
+
+    board.repl.inject({
+        motors: motors
+      });
+    motors.speed(80);
+
+    // board.wait(500, function() {
+    //   motors.reverse(90);
+    // });
+
+    // board.wait(500, function() {
+    //   motors.forward(90);
+    // });
+
+       // demonstrate stopping after 5 seconds
+      board.wait(500, function() {
+        motors.stop();
+      });   
+
+
+
+  // io.emit('click', msg);
+    console.log ('secondthing to do');
+    });
+
+
 });
+
+
+
+
+
+    // // Johnny-Five provides pre-packages shield configurations!
+    // // http://johnny-five.io/api/motor/#pre-packaged-shield-configs
+    // var motors = new five.Motors([
+    //   five.Motor.SHIELD_CONFIGS.POLOLU_DRV8835_SHIELD.M1,
+    //   five.Motor.SHIELD_CONFIGS.POLOLU_DRV8835_SHIELD.M2,
+    // ]);
+
+    // this.repl.inject({
+    //   motors: motors
+    // });
+
+    // motors.speed(80);
+
+    // // board.wait(500, function() {
+    // //   motors.reverse(90);
+    // // });
+
+    // // board.wait(500, function() {
+    // //   motors.forward(90);
+    // // });
+
+    //    // demonstrate stopping after 5 seconds
+    //   board.wait(500, function() {
+    //     motors.stop();
+    //   });   
+
+
