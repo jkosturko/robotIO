@@ -16,13 +16,24 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
 
-    socket.on('click', function (data) {
-    console.log('myclick', data);
+io.on('connection', function(socket){
+  socket.on('click', function(msg){
+    io.emit('click', msg);
+    console.log (msg);
   });
 });
+
+// io.on('connection', function (socket) {
+//   console.log('a user connected');
+//   socket.emit('news', { hello: 'world' });
+
+//   socket.on('click', function (data) {
+//     console.log(data);
+//     io.emit('chat message', data);
+//   });
+
+  //   socket.on('click', function (data) {
+  //   console.log('myclick', data);
+  // });
+// });
